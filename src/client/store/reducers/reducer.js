@@ -1,3 +1,4 @@
+import socketio from 'socket.io-client';
 import {
   SET_GAME_STATUS,
   SET_ERROR,
@@ -6,12 +7,17 @@ import {
   SET_SHADOW,
   SET_USERS,
 } from '../actions/types';
+
 import { serverUrl } from '../../config';
 
 console.log(serverUrl);
 console.log(process.env.NODE_ENV);
+const socket = socketio(process.env.NODE_ENV === 'production'
+  ? serverUrl
+  : 'http://localhost:4001');
 
 const initialState = {
+  socket,
   username: '',
   roomName: '',
   error: '',

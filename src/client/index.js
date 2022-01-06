@@ -1,18 +1,33 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import thunk from 'redux-thunk';
+import { createStore, applyMiddleware } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
+import { Provider } from 'react-redux';
+import createRootReducer from './store/reducers';
 import './index.css';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
+import socketMiddleware from './middlewares/socketMiddleware';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  // eslint-disable-next-line no-undef
-  document.getElementById('app'),
+// Initialize redux store and apply those middlewares:
+// - redux-thunk (to get dispatch inside action creators, see redux/actions/index.js)
+// - redux-logger in dev mode
+// - custom socketMiddleWare
+let middleware = [];
+middleware = [...middleware, thunk, socketMiddleware];
+
+const store = createStore(
+  createRootReducer(),
+  composeWithDevTools(
+    applyMiddleware(...middleware),
+  ),
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+// Render app inside redux context
+ReactDOM.render(
+  (
+    <Provider store={store}>
+      <App />
+    </Provider>
+  ), document.getElementById('app'),
+); // eslint-disable-line no-undef

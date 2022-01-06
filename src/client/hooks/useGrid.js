@@ -107,16 +107,16 @@ const useGrid = (player, resetPlayer, nbPlayers, setDropTime) => {
     opponentShadow,
   ]);
 
-  // useEffect(() => {
-  //   socket.on('start', () => {
-  //     console.log('start recieved');
-  //     startGame();
-  //   });
-  //   socket.on(SET_SHADOW, (shadow) => {
-  //     console.log('recieved updateShadow');
-  //     dispatch({ type: SET_SHADOW, payload: shadow });
-  //   });
-  // }, []);
+  useEffect(() => {
+    socket.on('start', () => {
+      console.log('start recieved');
+      startGame();
+    });
+    socket.on(SET_SHADOW, (shadow) => {
+      console.log('recieved updateShadow');
+      dispatch({ type: SET_SHADOW, payload: shadow });
+    });
+  }, []);
 
   return [grid, linesCleared, startGame];
 };

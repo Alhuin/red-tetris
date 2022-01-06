@@ -4,6 +4,7 @@ import { Route, Routes } from 'react-router-dom';
 import Root from './store';
 import Tetris from './components/Tetris';
 import ErrorBoundary from './components/ErrorBoundaries';
+import Home from './components/Home';
 
 function App() {
   return (
@@ -11,10 +12,10 @@ function App() {
       <ErrorBoundary>
         <Routes>
           <Route
-            path="/"
+            path="/:roomName[:username]"
             element={<Tetris />}
           />
-          {/* <Route exact path="/" element={<Home />} /> */}
+          <Route exact path="/" element={<Home />} />
         </Routes>
       </ErrorBoundary>
     </Root>

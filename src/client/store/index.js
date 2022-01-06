@@ -1,21 +1,22 @@
 import React from 'react';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
-import { HistoryRouter as Router } from 'redux-first-history/rr6';
-import { createBrowserHistory } from 'history';
+import { HashRouter as Router } from 'react-router-dom';
+import { createHashHistory } from 'history';
 import { applyMiddleware, createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { createReduxHistoryContext } from 'redux-first-history';
 import createRootReducer from './reducers';
+import socketMiddleware from '../middlewares/socketMiddleware';
 
 function Root({ children, initialState = {} }) {
   const {
     createReduxHistory,
     routerMiddleware,
     routerReducer,
-  } = createReduxHistoryContext({ history: createBrowserHistory() });
+  } = createReduxHistoryContext({ history: createHashHistory() });
 
-  const middlewares = [thunk, routerMiddleware];
+  const middlewares = [thunk, routerMiddleware, socketMiddleware];
 
   const store = createStore(
     createRootReducer(routerReducer),
@@ -25,11 +26,9 @@ function Root({ children, initialState = {} }) {
     ),
   );
 
-  const history = createReduxHistory(store);
-
   return (
     <Provider store={store}>
-      <Router history={history}>{children}</Router>
+      <Router basename="/" hashType="noslash">{children}</Router>
     </Provider>
   );
 }

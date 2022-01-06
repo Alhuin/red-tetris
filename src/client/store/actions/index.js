@@ -36,9 +36,9 @@ export const joinRoomSocket = (data) => (dispatch) => {
   }
 };
 
-export const checkRoomSocket = (history, data, cb) => (dispatch) => {
+export const checkRoomSocket = (data, cb) => (dispatch) => {
   dispatch({
-    type: CHECK_ROOM_USER, history, data, cb,
+    type: CHECK_ROOM_USER, data, cb,
   });
 };
 
